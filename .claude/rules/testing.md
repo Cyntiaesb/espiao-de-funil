@@ -1,0 +1,3 @@
+# Testing
+
+Regras de testes.
