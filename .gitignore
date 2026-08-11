@@ -1,0 +1,12 @@
+.claude/settings.local.json
+CLAUDE.local.md
+reports/*.md
+!reports/.gitkeep
+.env
+node_modules/
+PRODUTO.md
+PAGINA-DE-VENDAS.md
+*.pdf
+guia-instalacao.html
+guia-rapido.html
+espiao-de-funil-v1.0.0.zip

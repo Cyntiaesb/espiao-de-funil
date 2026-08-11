@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Espião de Funil — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+  :root{
+    --bg-primary:#0F0E0C;
+    --bg-surface:#1A1816;
+    --bg-cream:#F4EFE6;
+    --text-primary:#F4EFE6;
+    --text-body:#C8BEB4;
+    --text-muted:#7A706A;
+    --text-dark:#1A1816;
+    --text-dark-body:#4A4540;
+    --clay:#CC785C;
+    --brick:#D23C28;
+    --amber:#D4A853;
+    --vinho:#B4321E;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg-primary);color:var(--text-body);line-height:1.6;font-size:15px}
+
+  header{padding:48px 32px;border-bottom:1px solid rgba(204,120,92,0.15);position:relative}
+  header .badge-top{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:24px;display:block}
+  header h1{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:56px;line-height:1.05;letter-spacing:-0.02em;color:var(--text-primary);margin-bottom:8px}
+  header h1 .accent{color:var(--clay);font-style:italic}
+  header .header-rule{width:48px;height:1px;background:var(--clay);margin:16px 0}
+  header p{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--text-body);font-weight:600;max-width:600px}
+
+  .container{max-width:1200px;margin:0 auto;padding:48px 32px}
+
+  .input-card{background:var(--bg-surface);border:1px solid rgba(204,120,92,0.15);border-radius:12px;padding:32px;margin-bottom:48px;transition:border-color 200ms}
+  .input-card:hover{border-color:rgba(204,120,92,0.35)}
+  .input-card .label-mono{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:8px;display:block}
+  .input-card h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:24px;color:var(--text-primary);margin-bottom:16px}
+  .input-row{display:flex;gap:12px}
+  input[type=text]{flex:1;background:var(--bg-primary);border:1px solid rgba(204,120,92,0.2);border-radius:8px;padding:14px 18px;color:var(--text-primary);font-size:15px;font-family:'Inter',sans-serif;min-height:56px}
+  input[type=text]:focus{outline:none;border-color:var(--clay)}
+  input[type=text]::placeholder{color:var(--text-muted)}
+  button{background:var(--clay);border:0;border-radius:8px;padding:14px 32px;color:var(--text-primary);font-weight:600;cursor:pointer;font-size:15px;font-family:'Inter',sans-serif;min-height:56px;transition:all 200ms cubic-bezier(0.4,0,0.2,1);box-shadow:0 4px 24px rgba(204,120,92,0.12)}
+  button:hover{background:var(--vinho);transform:translateY(-2px)}
+  .command-box{margin-top:24px;display:none}
+  .command-box.show{display:block}
+  .flow-step{background:var(--bg-primary);border:1px solid rgba(204,120,92,0.15);border-radius:10px;padding:20px 24px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start}
+  .flow-step .num{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--clay);background:rgba(204,120,92,0.1);border:1px solid var(--clay);border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:600}
+  .flow-step .text{flex:1;font-size:14px;color:var(--text-body);padding-top:5px}
+  .flow-step .text strong{color:var(--text-primary);display:block;font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;margin-bottom:4px}
+  .flow-step .cmd{display:flex;align-items:center;gap:8px;background:#000;border-radius:6px;padding:10px 14px;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--clay)}
+  .flow-step .copy-btn{background:var(--clay);color:var(--text-primary);border:0;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:0.1em;text-transform:uppercase;min-height:0;box-shadow:none;font-weight:400;margin-left:auto}
+  .flow-step .copy-btn:hover{background:var(--vinho);transform:none}
+  .flow-step .copy-btn.copied{background:var(--amber)}
+
+  .tabs{display:flex;gap:4px;margin-bottom:32px;border-bottom:1px solid rgba(204,120,92,0.15);overflow-x:auto}
+  .tab{padding:14px 20px;background:transparent;border:0;border-bottom:2px solid transparent;color:var(--text-muted);cursor:pointer;white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;min-height:0;box-shadow:none;border-radius:0;transition:color 200ms}
+  .tab:hover{color:var(--text-body);transform:none;background:transparent}
+  .tab.active{color:var(--clay);border-bottom-color:var(--clay)}
+
+  .report{display:none}
+  .report.active{display:block}
+
+  .summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:32px}
+  .summary-card{background:var(--bg-surface);border:1px solid rgba(204,120,92,0.15);border-radius:12px;padding:24px;transition:border-color 200ms}
+  .summary-card:hover{border-color:rgba(204,120,92,0.35)}
+  .summary-card .label{font-family:'JetBrains Mono',monospace;color:var(--text-muted);font-size:10px;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:12px;display:block}
+  .summary-card .value{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:20px;color:var(--clay);line-height:1.3}
+
+  .section{background:var(--bg-surface);border:1px solid rgba(204,120,92,0.15);border-radius:12px;padding:36px;margin-bottom:24px;transition:border-color 200ms}
+  .section:hover{border-color:rgba(204,120,92,0.25)}
+  .section .section-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:8px;display:block}
+  .section h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:32px;color:var(--text-primary);margin-bottom:8px;line-height:1.1}
+  .section h2 .accent{color:var(--clay);font-style:italic}
+  .section-rule{width:48px;height:1px;background:var(--clay);margin:16px 0 24px}
+  .section h3{font-family:'Inter',sans-serif;font-weight:600;font-size:18px;color:var(--text-primary);margin-top:24px;margin-bottom:10px}
+  .section h4{font-family:'Inter',sans-serif;font-weight:600;font-size:15px;color:var(--text-body);margin-top:16px;margin-bottom:6px}
+  .section p{margin-bottom:14px;color:var(--text-body)}
+  .section ul,.section ol{margin-left:24px;margin-bottom:14px}
+  .section li{margin-bottom:6px;color:var(--text-body)}
+  .section strong{color:var(--text-primary);font-weight:600}
+  .section a{color:var(--amber);text-decoration:underline;text-underline-offset:3px}
+  .section a:hover{color:var(--clay)}
+  .section table{width:100%;border-collapse:collapse;margin:16px 0}
+  .section th,.section td{padding:12px;border-bottom:1px solid rgba(204,120,92,0.1);text-align:left;font-size:14px}
+  .section th{font-family:'JetBrains Mono',monospace;color:var(--clay);font-size:11px;text-transform:uppercase;letter-spacing:0.1em;border-bottom:1px solid rgba(204,120,92,0.3)}
+  .section blockquote{border-left:3px solid var(--clay);padding:12px 20px;color:var(--text-body);font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;margin:16px 0;background:rgba(204,120,92,0.04);border-radius:0 8px 8px 0}
+
+  .mermaid-wrap{background:var(--bg-cream);border-radius:12px;padding:32px;overflow-x:auto}
+  .mermaid-actions{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap}
+  .btn-secondary{background:transparent;border:1px solid var(--clay);color:var(--clay);padding:10px 20px;font-size:13px;text-decoration:none;border-radius:8px;display:inline-block;font-family:'Inter',sans-serif;font-weight:600;transition:all 200ms ease;min-height:0;box-shadow:none}
+  .btn-secondary:hover{background:rgba(204,120,92,0.08);transform:translateY(-2px)}
+
+  .empty{text-align:center;padding:96px 24px;color:var(--text-muted)}
+  .empty h3{font-family:'Cormorant Garamond',serif;font-size:32px;color:var(--text-body);margin-bottom:12px}
+  .empty p{font-size:15px}
+
+  footer{text-align:center;padding:32px;color:var(--text-muted);font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:0.15em;text-transform:uppercase;border-top:1px solid rgba(204,120,92,0.15);margin-top:48px}
+</style>
+</head>
+<body>
+<header>
+  <span class="badge-top">// espião de funil · v1.0</span>
+  <h1>Espião de <span class="accent">funil</span></h1>
+  <div class="header-rule"></div>
+  <p>Engenharia reversa de funis a partir de um link do Instagram.</p>
+</header>
+
+<div class="container">
+  <div class="input-card">
+    <span class="label-mono">// nova espionagem</span>
+    <h3>Cole o link do Instagram</h3>
+    <div class="input-row">
+      <input type="text" id="iglink" placeholder="https://www.instagram.com/perfil_alvo/">
+      <button onclick="generateCommand()">Gerar comando</button>
+    </div>
+    <div class="command-box" id="cmdbox"></div>
+  </div>
+
+  <div class="tabs" id="tabs"></div>
+  <div id="reports"></div>
+
+  <div class="empty" id="empty" style="display:none">
+    <h3>Nenhuma espionagem ainda</h3>
+    <p>Cole um link do Instagram acima e rode o comando no Claude Code.</p>
+  </div>
+</div>
+
+<footer>Espião de Funil · v1.0 · Dashboard gerada localmente</footer>
+
+<script>
+  mermaid.initialize({startOnLoad:false, theme:'base', securityLevel:'loose', themeVariables:{
+    primaryColor:'#FFFFFF',
+    primaryTextColor:'#1A1816',
+    primaryBorderColor:'#CC785C',
+    lineColor:'#CC785C',
+    secondaryColor:'#F4EFE6',
+    tertiaryColor:'#F4EFE6',
+    background:'#F4EFE6',
+    mainBkg:'#FFFFFF',
+    nodeBorder:'#CC785C',
+    clusterBkg:'#F4EFE6',
+    titleColor:'#1A1816',
+    edgeLabelBackground:'#F4EFE6',
+    fontFamily:'Inter, sans-serif'
+  }});
+
+  const REPORTS = [];
+
+  function copyCmd(btn, cmd){
+    navigator.clipboard.writeText(cmd).then(()=>{
+      btn.textContent = 'copiado ✓';
+      btn.classList.add('copied');
+      setTimeout(()=>{btn.textContent='copiar';btn.classList.remove('copied')}, 2000);
+    });
+  }
+
+  function generateCommand(){
+    const url = document.getElementById('iglink').value.trim();
+    const box = document.getElementById('cmdbox');
+    if(!url || !url.includes('instagram.com')){
+      box.innerHTML = '<div class="flow-step" style="border-color:rgba(210,60,40,.4)"><div class="num" style="color:var(--brick);border-color:var(--brick);background:rgba(210,60,40,.1)">!</div><div class="text"><strong>URL inválida</strong>Cola um link que comece com instagram.com/...</div></div>';
+      box.classList.add('show');
+      return;
+    }
+    const spyCmd = '/spy ' + url;
+    box.innerHTML = `
+      <div class="flow-step">
+        <div class="num">1</div>
+        <div class="text">
+          <strong>Copie o comando abaixo</strong>
+          Esse comando manda o Espião analisar o perfil.
+          <div class="cmd">
+            <span id="cmd1">${spyCmd}</span>
+            <button class="copy-btn" onclick="copyCmd(this, '${spyCmd}')">copiar</button>
+          </div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="num">2</div>
+        <div class="text">
+          <strong>Abra o Claude Code e cole</strong>
+          Vá na janela do terminal onde o Claude Code está aberto (a mesma onde você instalou o produto). Cole o comando e aperte Enter. Vai levar 2 a 4 minutos.
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="num">3</div>
+        <div class="text">
+          <strong>Quando terminar, atualize a dashboard</strong>
+          De volta no Claude Code, digite o comando abaixo:
+          <div class="cmd">
+            <span>/dash</span>
+            <button class="copy-btn" onclick="copyCmd(this, '/dash')">copiar</button>
+          </div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="num">4</div>
+        <div class="text">
+          <strong>Recarregue esta página</strong>
+          Aperte F5 ou Ctrl+R no navegador. O relatório vai aparecer aqui em baixo.
+        </div>
+      </div>
+    `;
+    box.classList.add('show');
+  }
+
+  function renderReports(){
+    const tabs = document.getElementById('tabs');
+    const reports = document.getElementById('reports');
+    const empty = document.getElementById('empty');
+
+    if(!REPORTS || REPORTS.length===0){
+      empty.style.display = 'block';
+      return;
+    }
+
+    REPORTS.forEach((r, i) => {
+      const tab = document.createElement('button');
+      tab.className = 'tab' + (i===0?' active':'');
+      tab.textContent = '@' + r.handle + ' · ' + r.date;
+      tab.onclick = () => {
+        document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+        document.querySelectorAll('.report').forEach(rep=>rep.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('rep-'+i).classList.add('active');
+      };
+      tabs.appendChild(tab);
+
+      const div = document.createElement('div');
+      div.className = 'report' + (i===0?' active':'');
+      div.id = 'rep-'+i;
+      div.innerHTML = `
+        <div class="summary-grid">
+          <div class="summary-card"><span class="label">// tipo de funil</span><div class="value">${r.tipo}</div></div>
+          <div class="summary-card"><span class="label">// ticket estimado</span><div class="value">${r.ticket}</div></div>
+          <div class="summary-card"><span class="label">// gatilho dominante</span><div class="value">${r.gatilho}</div></div>
+          <div class="summary-card"><span class="label">// estágio</span><div class="value">${r.estagio}</div></div>
+        </div>
+        <div class="section">
+          <span class="section-label">// mapa do funil</span>
+          <h2>Diagrama <span class="accent">interativo</span></h2>
+          <div class="section-rule"></div>
+          <div class="mermaid-wrap"><div class="mermaid" id="mer-${i}">${r.mermaid}</div></div>
+          <div class="mermaid-actions">
+            <a class="btn-secondary" href="${r.mermaidLink}" target="_blank">Abrir no Mermaid.live</a>
+            <a class="btn-secondary" href="${r.reportFile}" target="_blank">Ver relatório completo</a>
+          </div>
+        </div>
+        <div class="section">
+          <span class="section-label">// diagnóstico estratégico</span>
+          <h2>Análise <span class="accent">da operação</span></h2>
+          <div class="section-rule"></div>
+          <div>${marked.parse(r.diagnostico)}</div>
+        </div>
+      `;
+      reports.appendChild(div);
+    });
+
+    mermaid.run({querySelector:'.mermaid'});
+  }
+
+  renderReports();
+</script>
+</body>
+</html>
