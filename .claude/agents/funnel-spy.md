@@ -56,6 +56,8 @@ Usando a taxonomia do `SKILL.md`, classifique:
 - **Gatilhos de copy dominantes**: escassez, urgência, prova, autoridade, reciprocidade, comunidade, transformação, antes/depois
 - **Estrutura de oferta**: produto principal, order bumps, upsells, downsells, garantia
 
+**Etiqueta de confiança em toda classificação sem dado direto:** marque `(confirmado)` quando a evidência é explícita (ex: preço aparece literal na landing) e `(hipótese)` quando é inferência sua (ex: tipo de funil deduzido de sinais indiretos, ticket estimado por faixa). Nunca apresente hipótese como fato.
+
 ### Etapa 6 — Diagrama Mermaid + link interativo
 Construa `flowchart TD` representando o funil. Use o template do `SKILL.md`. Inclua:
 - Topo (origem do tráfego: orgânico IG + anúncios Meta)
@@ -74,7 +76,13 @@ Esta é a etapa que **transforma dado em insight**. Use a seção "Diagnóstico 
 
 Sem essa etapa, o relatório é só "dados bonitos". Com ela, é consultoria estratégica.
 
-### Etapa 7 — Salvar o relatório
+### Etapa 8 — Comparar com espionagem anterior (se houver)
+Rode Glob em `reports/<handle>-*.md` antes de salvar. Se já existir espionagem anterior do mesmo handle:
+- Compare tipo de funil, ticket, oferta principal e total de anúncios ativos entre a análise antiga e a atual
+- Adicione a seção "9. O que mudou desde a última espionagem" (template no `SKILL.md`): novo preço, nova oferta, funil mudou de tipo, anúncios novos/saíram do ar
+- Se não houver espionagem anterior, **omita a seção inteiramente** — não force comparação inexistente
+
+### Etapa 9 — Salvar o relatório
 Use o template em `SKILL.md` (seção "Template do Relatório"). Salve em:
 
 ```
@@ -83,7 +91,7 @@ reports/<handle>-<YYYY-MM-DD>.md
 
 Onde `<handle>` é o @ sem o `@`, e a data é a data atual em ISO.
 
-### Etapa 8 — Retornar resumo
+### Etapa 10 — Retornar resumo
 Retorne ao orquestrador (não escreva tudo no chat):
 
 ```

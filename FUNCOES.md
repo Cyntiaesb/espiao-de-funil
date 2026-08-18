@@ -28,16 +28,18 @@ A ferramenta funciona através de **3 comandos** dentro do Claude Code:
 /spy https://www.instagram.com/perfil_alvo/
 ```
 
-**O que acontece (pipeline de 8 etapas, 2–4 minutos):**
+**O que acontece (pipeline de 10 etapas, 2–4 minutos):**
 
 1. **Validação da URL** — confirma que é um link válido do Instagram
 2. **Scraping do Instagram** — bio, link na bio, posts recentes, CTAs, engajamento, autoridade
 3. **Fetch da landing page** — copy, headline, sub, preços, pixels, plataforma de checkout, garantia, bônus, prova social
 4. **Meta Ad Library** — anúncios ativos, criativos, datas, copy, variações
-5. **Análise estratégica** — classificação do funil, identificação de gatilhos, tipo de oferta
+5. **Análise estratégica** — classificação do funil, identificação de gatilhos, tipo de oferta (cada uma etiquetada como confirmado ou hipótese)
 6. **Diagrama Mermaid** — desenho visual do funil com nós clicáveis
 7. **Diagnóstico estratégico** — análise de por que funciona + pontos fortes/fracos
-8. **Relatório final** — salvo em `reports/<handle>-<data>.md`
+8. **Comparação temporal** — se já existir espionagem anterior desse mesmo perfil, aponta o que mudou
+9. **Relatório final** — salvo em `reports/<handle>-<data>.md`
+10. **Resumo no chat** — 3 bullets (tipo, gatilho, ticket)
 
 **O que você recebe:**
 - Arquivo Markdown completo em `reports/`
@@ -96,7 +98,7 @@ A ferramenta funciona através de **3 comandos** dentro do Claude Code:
 
 ## 📊 O que o relatório de cada espionagem traz
 
-Todo relatório (`reports/<handle>-<data>.md`) segue **8 seções padronizadas**:
+Todo relatório (`reports/<handle>-<data>.md`) segue **9 seções padronizadas** (a 9ª só aparece se já existir espionagem anterior do mesmo perfil):
 
 ### Seção 1 — Resumo executivo
 - Tipo de funil (PLF, perpétuo, VSL, low-ticket, etc.)
@@ -149,6 +151,9 @@ Lista numerada de aprendizados práticos pra aplicar no seu próprio funil.
 ### Seção 8 — Pontos fracos detectados
 Lista de oportunidades que o concorrente não está aproveitando — onde você pode atacar.
 
+### Seção 9 — O que mudou desde a última espionagem ⭐ (condicional)
+Se você já espionou esse mesmo perfil antes, essa seção compara: tipo de funil, ticket, oferta principal e total de anúncios ativos entre a análise antiga e a atual. Transforma um snapshot único em monitoramento — você vê a operação evoluir (ou pivotar) ao longo do tempo.
+
 ---
 
 ## 🎨 A Dashboard (dashboard.html)
@@ -174,7 +179,7 @@ Interface visual auto-contida que roda direto no navegador, sem servidor.
 espiao-de-funil/
 ├── .claude/
 │   ├── agents/
-│   │   └── funnel-spy.md           # Subagente orquestrador (pipeline de 8 etapas)
+│   │   └── funnel-spy.md           # Subagente orquestrador (pipeline de 10 etapas)
 │   ├── skills/
 │   │   └── funnel-spy/
 │   │       └── SKILL.md            # Playbook (taxonomia, gatilhos, templates)
@@ -269,14 +274,13 @@ Cada relatório fica salvo com data no nome (`<handle>-<data>.md`). Se você esp
 
 ---
 
-## 🔄 Roadmap de versões futuras
+## 🔄 Roadmap — ideias pra próximas versões
 
-Recursos que **podem** chegar em versões pagas/atualizações:
+Nada aqui é promessa de prazo — são ideias em aberto pra quem quiser contribuir:
 
 - 🔜 Espionagem em lote (`/spy-batch` com lista de URLs)
 - 🔜 Detecção de plataformas de afiliados
-- 🔜 Análise de tendência de criativos (qual está sendo escalado)
-- 🔜 Comparativo automático entre perfis
+- 🔜 Comparativo automático entre perfis diferentes (hoje já compara o mesmo perfil ao longo do tempo, ver Seção 9)
 - 🔜 Exportação do relatório para PDF estilizado
 - 🔜 Integração com Notion/Airtable
 

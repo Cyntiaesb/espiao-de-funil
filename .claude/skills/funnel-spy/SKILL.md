@@ -177,6 +177,13 @@ Salve em `reports/<handle>-<YYYY-MM-DD>.md`:
 - <ponto 1>
 - <ponto 2>
 
+## 9. O que mudou desde a última espionagem (só se houver espionagem anterior do mesmo handle)
+- **Tipo de funil:** <igual | mudou de X para Y>
+- **Ticket:** <igual | mudou de X para Y>
+- **Oferta principal:** <igual | mudou>
+- **Anúncios ativos:** <N antes → N agora>
+- **Novidades:** <lista curta>
+
 ---
 *Relatório gerado pelo Espião de Funil v1.0*
 ```
@@ -184,6 +191,8 @@ Salve em `reports/<handle>-<YYYY-MM-DD>.md`:
 ## 7. Regras de qualidade
 
 - Nunca escreva opinião como fato. Se não viu, marque `(não disponível)`.
+- **Etiquete confiança:** `(confirmado)` pra dado direto da fonte (preço na landing, pixel encontrado no HTML), `(hipótese)` pra inferência sua (tipo de funil deduzido, criativo vencedor sem métrica de conversão real). O leitor precisa distinguir dado de dedução.
 - Se a copy estiver em inglês/outro idioma, **traduza** as citações pro PT-BR no relatório.
 - Cite trechos literais de copy entre aspas — não parafraseie a copy do alvo.
 - Diagrama Mermaid: max 15 nodes, mantenha legível.
+- Seção 9 (comparação temporal) só entra se existir espionagem anterior do mesmo handle — não invente linha de base.

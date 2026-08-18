@@ -24,6 +24,17 @@ Você cola um link do Instagram. Em ~3 minutos você recebe:
 - **Claude Code**: sua assinatura
 - **Apify**: free tier dá ~50 espionagens/mês. Depois custa ~$0.05–0.20 por espionagem completa.
 
+## Quer só os anúncios, sem processar landing/checkout?
+
+Existe uma ferramenta irmã, o [Radar de Anúncios](https://github.com/Cyntiaesb/radar-de-anuncios), focado só em análise profunda de criativos no Meta Ad Library — mais rápido quando você já sabe que quer entender só a estratégia de tráfego pago.
+
+## Parte da família Radar
+
+- [Radar de Demanda](https://github.com/Cyntiaesb/radar-de-demanda) — descobre o que o mercado já busca e já compra
+- [Radar de Posicionamento](https://github.com/Cyntiaesb/radar-de-posicionamento) — estudo de mercado + posicionamento + Value Proposition Canvas
+- [Radar de Anúncios](https://github.com/Cyntiaesb/radar-de-anuncios) — análise profunda só dos anúncios ativos de alguém
+- **Espião de Funil** — o funil inteiro de alguém, reconstruído a partir de um link do Instagram
+
 ## Suporte
 
 - Bugs e atualizações: abra uma Issue neste repositório, ou me chama no Instagram [@cyntiaesberard](https://instagram.com/cyntiaesberard)
